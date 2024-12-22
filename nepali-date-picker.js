@@ -17,7 +17,7 @@
 
 	// give each calendar instance a unique id
 	var cal_no = 1;
-	var cal_id = '';
+	var cur_cal_id = ''; // cur selected calendar id
 
 	// set default date to this month
 	var this_year = converter.getNepaliYear();
@@ -51,7 +51,48 @@
 
 	var sel_input;
 
-	$.fn.nepaliDatePicker = function () {
+	var settings = [];
+
+	const updateSettings = (cal_id, newData) => {
+		settings.forEach((setting, index) => {
+			if (setting.cal_id === cal_id) {
+				settings[index] = { cal_id: cal_id, ...newData };
+			}
+		});
+	};
+
+	const getSettingsValue = (cal_id, key = null) => {
+		let value = null; // Use null to indicate no match
+
+		// Iterate through each setting
+		for (const setting of settings) {
+			if (setting.cal_id === cal_id) {
+				// If no key is provided, return the entire setting object
+				if (!key) {
+					return setting;
+				}
+
+				// Return the specific key's value
+				return setting[key] || null; // Handle missing keys safely
+			}
+		}
+
+		return value; // Return null if no matching cal_id is found
+	};
+
+	$.fn.nepaliDatePicker = function (options) {
+		var defaults = $.extend(
+			{
+				// These are the defaults.
+				locale: 'np', // en
+				single: false, // enable single or multi date picker
+				show_all_dates: false, // show all selected dates as input field value
+				date_before: '', // dates before this date will be disabled
+				date_after: '', // dates after this date will be disabled
+			},
+			options
+		);
+
 		// detect OS
 		if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
 			os = 'mac';
@@ -60,9 +101,17 @@
 		// give calendar a unique id
 		$(this).each(function () {
 			let $this = $(this);
+			const cur_cal = 'cal-' + cal_no;
 
 			// give unique id to each calendar instance
-			$(this).attr('data-cal_id', 'cal-' + cal_no);
+			$(this).attr('data-cur_cal_id', cur_cal);
+
+			// update settings
+			settings.push({
+				cal_id: cur_cal,
+				...defaults,
+			});
+
 			cal_no++;
 
 			// add common class to all input fields
@@ -73,6 +122,18 @@
 			var default_value = $.trim($(this).attr('value'));
 
 			let data_single = $(this).data('single');
+			let data_show_all_dates = $(this).data('show_all_dates');
+			let data_date_before = $(this).data('date_before');
+			let data_date_after = $(this).data('date_after');
+			let data_locale = $(this).data('locale');
+
+			updateSettings(cur_cal, {
+				single: data_single || defaults.single,
+				show_all_dates: data_show_all_dates || defaults.show_all_dates,
+				date_before: data_date_before || defaults.date_before,
+				date_after: data_date_after || defaults.date_after,
+				locale: data_locale || defaults.locale,
+			});
 
 			if (data_single == true || data_single == 1) {
 				single_datepicker = 1;
@@ -80,12 +141,9 @@
 				single_datepicker = 0;
 			}
 
-			if (default_value && !single_datepicker) {
+			if (default_value && !data_single) {
 				// set form
 				$form = $(this).parents('form');
-
-				// set calendar id
-				cal_id = $(this).data('cal_id');
 
 				// this will be used to generate hidden input fields with same input name
 				input_field_name = $(this).attr('name');
@@ -95,7 +153,7 @@
 					generate_hidden_input_fields(item.trim());
 				});
 
-				if ($(this).data('show_all_dates') != true) {
+				if (data_show_all_dates != true) {
 					if (default_dates.length > 1) {
 						output_msg = default_dates.length + ' dates selected';
 					} else {
@@ -105,8 +163,6 @@
 					// show message to main selector field
 					$(this).attr('value', output_msg);
 				} else {
-					// "data-show_all-dates" = true
-
 					if (!$this.is('input')) {
 						// input type is not "input".
 						// show all default values into selected container.
@@ -128,31 +184,24 @@
 			user_selected_dates = [];
 			$selector = $(this);
 
-			data_single = $(this).data('single');
+			cur_cal_id = $(this).attr('data-cur_cal_id');
 
-			if (data_single == true || data_single == 1) {
-				single_datepicker = 1;
-			} else {
-				single_datepicker = 0;
-			}
+			let setting = getSettingsValue(cur_cal_id);
 
-			locale = $(this).data('locale');
-			locale = locale ? locale : 'np';
+			single_datepicker = setting.single;
+			locale = setting.locale;
+			date_after = setting.date_after;
+			date_before = setting.date_before;
 
-			date_after = $(this).data('date_after');
 			if (date_after) {
 				let date_after_ar = date_after.split('-');
 				start_year = parseInt(date_after_ar[0]);
 			}
 
-			date_before = $(this).data('date_before');
 			if (date_before) {
 				let date_before_ar = date_before.split('-');
 				end_year = parseInt(date_before_ar[0]);
 			}
-
-			// set calendar id
-			cal_id = $(this).data('cal_id');
 
 			// initiate calendar ui
 			init(this);
@@ -193,7 +242,7 @@
 				}
 
 				var $hidden_publish_dates = $(
-					'input.andp-hidden-dates[data-cal_id="' + cal_id + '"]'
+					'input.andp-hidden-dates[data-cur_cal_id="' + cur_cal_id + '"]'
 				);
 				var total_hidden_dates = $hidden_publish_dates.length;
 
@@ -212,7 +261,7 @@
 					} else {
 						// last selected date
 						older_date = $(
-							'input.andp-hidden-dates[data-cal_id="' + cal_id + '"]'
+							'input.andp-hidden-dates[data-cur_cal_id="' + cur_cal_id + '"]'
 						);
 						let total_older_date = older_date.length;
 						older_date = format_date_yyyy_mm_dd(
@@ -316,7 +365,7 @@
 			}
 
 			var $sel_calendar = $(
-				'.andp-datepicker-container[data-cal_id="' + cal_id + '"]'
+				'.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]'
 			);
 
 			// disable shift or ctrl key on single_datepicker
@@ -454,7 +503,9 @@
 				.change();
 		} else {
 			// destroy previous hidden input fields
-			$('input.andp-hidden-dates[data-cal_id="' + cal_id + '"]').remove();
+			$(
+				'input.andp-hidden-dates[data-cur_cal_id="' + cur_cal_id + '"]'
+			).remove();
 
 			for (i = 0; i <= total_user_selected_dates - 1; i++) {
 				// generate new hidden input fields
@@ -463,7 +514,11 @@
 
 			var output_msg = ''; //user_selected_dates[0];
 
-			if ($selector.data('show_all_dates') == true) {
+			let show_all_dates = getSettingsValue(cur_cal_id, 'show_all_dates');
+
+			// console.log('show_all_dates', show_all_dates);
+
+			if (show_all_dates == true) {
 				if ($selector.is(':input')) {
 					output_msg = user_selected_dates.join(', ');
 				} else {
@@ -496,9 +551,9 @@
 		// close other instance of calendar
 		$('.andp-datepicker-container').removeClass('open').hide();
 
-		// check if calendar ui has already been generated for selected cal_id
+		// check if calendar ui has already been generated for selected cur_cal_id
 		var $sel_calendar = $(
-			'.andp-datepicker-container[data-cal_id="' + cal_id + '"]'
+			'.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]'
 		);
 		if ($sel_calendar.length > 0) {
 			$year_select = $sel_calendar.find('.andp-year-select');
@@ -511,7 +566,9 @@
 		}
 
 		var template =
-			'<div class="andp-datepicker-container" data-cal_id="' + cal_id + '" >';
+			'<div class="andp-datepicker-container" data-cur_cal_id="' +
+			cur_cal_id +
+			'" >';
 		template += '<div class = "andp-header">';
 		template +=
 			'<button type = "button"  class = "andp-prev andp-change-months"> &#10094; </button>';
@@ -553,8 +610,8 @@
 
 		if (!single_datepicker) {
 			template +=
-				'<button type="button" class="apply-date" data-cal_id="' +
-				cal_id +
+				'<button type="button" class="apply-date" data-cur_cal_id="' +
+				cur_cal_id +
 				'">' +
 				(locale === 'np' ? 'सेभ गर्नु' : 'Apply') +
 				'</button>';
@@ -568,7 +625,7 @@
 
 		// re-initiate var, wont work otherwise
 		$sel_calendar = $(
-			'.andp-datepicker-container[data-cal_id="' + cal_id + '"]'
+			'.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]'
 		);
 
 		$year_select = $sel_calendar.find('.andp-year-select');
@@ -663,9 +720,9 @@
 
 		generate_days();
 
-		$('.andp-datepicker-container[data-cal_id="' + cal_id + '"]').addClass(
-			'open'
-		);
+		$(
+			'.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]'
+		).addClass('open');
 
 		fix_calendar_alignment();
 	}
@@ -681,17 +738,21 @@
 
 		if (calendar_width + elem_pos.left + 10 > document_width) {
 			var right_offset = document_width - (elem_pos.left + selector_width);
-			$('.andp-datepicker-container[data-cal_id="' + cal_id + '"]').css({
-				top: elem_pos.top + elem_height,
-				right: right_offset,
-				left: 'inherit',
-			});
+			$('.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]').css(
+				{
+					top: elem_pos.top + elem_height,
+					right: right_offset,
+					left: 'inherit',
+				}
+			);
 		} else {
-			$('.andp-datepicker-container[data-cal_id="' + cal_id + '"]').css({
-				top: elem_pos.top + elem_height,
-				left: elem_pos.left,
-				right: 'inherit',
-			});
+			$('.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]').css(
+				{
+					top: elem_pos.top + elem_height,
+					left: elem_pos.left,
+					right: 'inherit',
+				}
+			);
 		}
 	}
 
@@ -746,6 +807,8 @@
 					let day = j < 10 ? '0' + j : j;
 					let proper_date = year + '-' + month + '-' + day;
 					let ar_index = user_selected_dates.indexOf(proper_date);
+
+					console.log('ar_index', ar_index, proper_date, user_selected_dates);
 
 					let compare_date_after = converter.compareDate(
 						proper_date,
@@ -872,7 +935,7 @@
 
 		var ar_index = user_selected_dates.indexOf(selected_date); // check if selected_date already exists in user_selected_date
 		var $sel_calendar = $(
-			'.andp-datepicker-container[data-cal_id="' + cal_id + '"]'
+			'.andp-datepicker-container[data-cur_cal_id="' + cur_cal_id + '"]'
 		);
 		var $this = $sel_calendar.find('.day[data-date="' + selected_date + '"]');
 
@@ -899,8 +962,8 @@
 
 	function generate_hidden_input_fields(value) {
 		$form.append(
-			'<input class="andp-hidden-dates" type="hidden" data-cal_id="' +
-				cal_id +
+			'<input class="andp-hidden-dates" type="hidden" data-cur_cal_id="' +
+				cur_cal_id +
 				'" name="' +
 				input_field_name +
 				'[]" value="' +
@@ -1250,6 +1313,8 @@
 			// 1  = date 1 is later / bigger
 			// 0 = both dates are equal
 			// 2 = date 2 is later / bigger
+
+			if (!date1 || !date2) return 0;
 
 			const [year1, month1, day1] = date1.split('-').map(Number);
 			const [year2, month2, day2] = date2.split('-').map(Number);

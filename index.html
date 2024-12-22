@@ -44,12 +44,12 @@
 						<div class="col-sm-6">
 							<label for="staticEmail" class="col-form-label">Example 1</label>
 							<input type="text" class="date-picker form-control" data-single="1" name="date1" value=""
-								placeholder="Click here to select date">
+								id="ex1" placeholder="Click here to select date">
 						</div>
 
 						<div class="col-sm-6">
 							<label for="staticEmail" class="col-form-label">Example 2</label>
-							<input type="text" class="date-picker form-control" data-single="true" name="date2"
+							<input type="text" class="date-picker form-control" data-single="true" name="date2" id="ex2"
 								value="2076-1-5" placeholder="Click here to select date">
 						</div>
 					</div>
@@ -64,13 +64,13 @@
 						<div class="col-sm-6">
 							<label for="staticEmail" class="col-form-label">Example 1.1</label>
 							<input type="text" class="date-picker form-control" data-single="1" data-locale="np"
-								name="date1" value="" placeholder="Click here to select date">
+								name="date1" value="" placeholder="यहाँ क्लिक गर्नुहोस्">
 						</div>
 
 						<div class="col-sm-6">
 							<label for="staticEmail" class="col-form-label">Example 2.1</label>
-							<input type="text" class="date-picker form-control" data-single="true" data-locale="en"
-								name="date2" value="2076-1-5" placeholder="Click here to select date">
+							<input type="text" class="date-picker form-control" data-single="1" data-locale="en"
+								name="date2" placeholder="Click here to select date">
 						</div>
 					</div>
 
@@ -101,7 +101,7 @@
 
 						<div class="col-sm-12 mt-3">
 							<label for="staticEmail" class="col-form-label">Example 6</label>
-							<div class="date-picker form-control" value="2076-1-1, 2076-1-5" name="date6"
+							<div class="date-picker form-control" value="2076-01-01, 2076-01-05" name="date6"
 								data-show_all_dates="true"></div>
 						</div>
 					</div>
@@ -139,7 +139,8 @@
 
 				<h4 class="mt-5">Usage</h4>
 				<p>Initialize with $.fn.nepaliDatePicker method.</p>
-				<pre><code class="language-js">&lt;input class="datepicker"&gt; $('.datepicker').nepaliDatePicker();</code></pre>
+				<pre><code class="language-js">&lt;input class="datepicker"&gt;
+$('.datepicker').nepaliDatePicker();</code></pre>
 
 
 				<h4 class="mt-5">Single or Multiple Selection Mode</h4>
@@ -191,6 +192,14 @@
 	<script>
 		jQuery(document).ready(function () {
 			$('.date-picker').nepaliDatePicker();
+			// $('#ex1').nepaliDatePicker({
+			// 	single: true
+			// });
+
+			$('#ex2').nepaliDatePicker({
+				single: true,
+				locale: 'en'
+			});
 		})
 	</script>
 
