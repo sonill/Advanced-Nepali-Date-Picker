@@ -42,13 +42,13 @@
 
 					<div class="form-group row">
 						<div class="col-sm-6">
-							<label for="staticEmail" class="col-form-label">Example 1</label>
+							<label for="staticEmail" class="col-form-label">Example 1.1</label>
 							<input type="text" class="date-picker form-control" data-single="1" name="date1" value=""
 								id="ex1" placeholder="Click here to select date">
 						</div>
 
 						<div class="col-sm-6">
-							<label for="staticEmail" class="col-form-label">Example 2</label>
+							<label for="staticEmail" class="col-form-label">Example 1.2</label>
 							<input type="text" class="date-picker form-control" data-single="true" name="date2" id="ex2"
 								value="2076-1-5" placeholder="Click here to select date">
 						</div>
@@ -62,13 +62,13 @@
 
 					<div class="form-group row">
 						<div class="col-sm-6">
-							<label for="staticEmail" class="col-form-label">Example 1.1</label>
+							<label for="staticEmail" class="col-form-label">Example 2.1</label>
 							<input type="text" class="date-picker form-control" data-single="1" data-locale="np"
 								name="date1" value="" placeholder="यहाँ क्लिक गर्नुहोस्">
 						</div>
 
 						<div class="col-sm-6">
-							<label for="staticEmail" class="col-form-label">Example 2.1</label>
+							<label for="staticEmail" class="col-form-label">Example 2.2</label>
 							<input type="text" class="date-picker form-control" data-single="1" data-locale="en"
 								name="date2" placeholder="Click here to select date">
 						</div>
@@ -82,25 +82,25 @@
 
 					<div class="form-group row">
 						<div class="col-sm-4">
-							<label for="staticEmail" class="col-form-label">Example 3</label>
+							<label for="staticEmail" class="col-form-label">Example 3.1</label>
 							<input type="text" class="date-picker form-control" name="date3"
 								placeholder="Click here to select date">
 						</div>
 
 						<div class="col-sm-4">
-							<label for="staticEmail" class="col-form-label">Example 4</label>
+							<label for="staticEmail" class="col-form-label">Example 3.2</label>
 							<input type="text" class="date-picker form-control" name="date4" value="2075-5-12"
 								placeholder="Click here to select date">
 						</div>
 
 						<div class="col-sm-4">
-							<label for="staticEmail" class="col-form-label">Example 5</label>
+							<label for="staticEmail" class="col-form-label">Example 3.3</label>
 							<input type="text" class="date-picker form-control" value="2076-12-11,   2076-12-12"
 								name="date5" placeholder="Click here to select date" data-show_all_dates="true">
 						</div>
 
 						<div class="col-sm-12 mt-3">
-							<label for="staticEmail" class="col-form-label">Example 6</label>
+							<label for="staticEmail" class="col-form-label">Example 3.4</label>
 							<div class="date-picker form-control" value="2081-08-01, 2081-08-05, 2081-04-12, 2080-04-20"
 								name="date6" data-show_all_dates="true"></div>
 						</div>
@@ -113,11 +113,18 @@
 				<form>
 
 					<div class="form-group row">
-						<div class="col-sm-7">
-							<label for="staticEmail" class="col-form-label">Example 7</label>
+						<div class="col-sm-6">
+							<label for="staticEmail" class="col-form-label">Example 4.1</label>
 							<input type="text" class="date-picker form-control" name="date3"
 								data-date_after="2081-09-07" data-date_before="2081-09-15"
-								placeholder="Show Dates between 2081-09-07 and 2081-08-15">
+								placeholder="Dates between 2081-09-07 and 2081-08-15">
+						</div>
+
+						<div class="col-sm-6">
+							<label for="staticEmail" class="col-form-label">Example 4.2</label>
+							<input type="text" class="date-picker form-control" name="date3" data-single="true"
+								data-date_after="2081-09-07" data-date_before="2081-09-15"
+								placeholder="Dates between 2081-09-07 and 2081-08-15">
 						</div>
 
 					</div>
@@ -138,34 +145,51 @@
 
 
 				<h4 class="mt-5">Usage</h4>
-				<p>Initialize with $.fn.nepaliDatePicker method.</p>
-				<pre><code class="language-js">&lt;input class="datepicker"&gt;
+				<p>Create an HTML input field and initialize with $.fn.nepaliDatePicker method.</p>
+				<pre><code class="language-js">&lt;input type="text" class="datepicker"  /&gt;
 $('.datepicker').nepaliDatePicker();</code></pre>
-
 
 				<h4 class="mt-5">Single or Multiple Selection Mode</h4>
 				<p>By default it is in multiple date selection mode. If you want to use single date selection mode then
-					just add <code>data-single="true"</code> in your markup.</p>
+					just add <code>data-single="true"</code> in your markup. [Example 1.1 and 1.2]</p>
 				<pre><code class="language-markup">&lt;input class="datepicker" data-single="true"&gt;</code></pre>
 
 				<h4 class="mt-5">Nepali or English Language</h4>
-				<p>By default calendar will show in Nepali lanauge. To show in English lanuage jsut add
-					<code>data-locale="en"</code> into your markup .
+				<p>By default calendar will show in Nepali lanauge. To show in English language just add
+					<code>data-locale="en"</code> into your markup. [Example 2.1 and 2.2]
 				</p>
 				<pre><code class="language-markup">&lt;input class="datepicker" data-locale="np"&gt;</code></pre>
+
+				<h4 class="mt-5">Restrict Date Selection</h4>
+				<p>By default calendar will show all the dates from Nepali calendar. If you want to restrict date just
+					pass <code>data-date_after</code> and <code>data-date_before</code> in your markup. [Example 4.1 and
+					4.2]</p>
+				<pre><code class="language-markup">&lt;input class="datepicker" data-locale="np"&gt;</code></pre>
+
+				<h4 class="mt-5">Pass data as plugin properties</h4>
+				<p>All the options available as <code>data-*</code> can also be passed as plugin properties</p>
+				<pre><code class="language-js">$('.datepicker').nepaliDatePicker({
+	locale: 'np', // en or np
+	single: false, // true (default) for multi date picker
+	show_all_dates: false, // true for showing all selected dates as input field value
+	date_before: '', // dates before this date will be disabled
+	date_after: '', // dates after this date will be disabled
+});</code></pre>
 
 				<h4 class="mt-5">Options</h4>
 				<p>In multiple date selection mode, selected date can be displayed in 3 different ways.</p>
 				<ul>
-					<li>If only 1 date is selected, then it will show selected date as value in input field. [Example 3
-						and 4]</li>
-					<li>If more than 1 date is selected, then following message will be shown in input field: [Example 3
-						and 4] <br>
-						<code>* dates selected</code>
+					<li>If only 1 date is selected, it will show selected date as value in input field.
+						[Example 3.1 and 3.2]</li>
+					<li>If more than 1 date are selected, it will show the total number of dates selected as value.
+						[Example 3.1 and 3.2]</li>
+					<li>To show all dates as input value, use <code>data-show_all_dates="true"</code> in input
+						field.
+						[Example 3.3]
 					</li>
-					<li>To show all dates as input value, use <code>data-show_all_dates="true"</code> in input field.
-						[Example 5]<br>
-					</li>
+					<li>To show dates as tags, use <code>&lt;div&gt;</code> instead of <code>&lt;input&gt;</code>.
+						[Example 3.4]</li>
+					<li>In all cases, actual dates are sent as hidden input fields.</li>
 					<pre><code class="language-html">&lt;input class="datepicker" data-show_all_dates="true"&gt;</code></pre>
 				</ul>
 
@@ -174,7 +198,8 @@ $('.datepicker').nepaliDatePicker();</code></pre>
 				</p>
 
 				<h4 class="mt-5">Plugin Authors</h4>
-				<p><strong>Sanil Shakya</strong> - (<a href="https://www.sanil.com.np">https://www.sanil.com.np</a>)</p>
+				<p><strong>Sanil Shakya</strong> - (<a href="https://www.sanil.com.np">https://www.sanil.com.np</a>)
+				</p>
 
 				<h4 class="mt-5">License</h4>
 				<p>This plugin is free to use in any commercial or personal project. Check license here : <a
@@ -192,14 +217,6 @@ $('.datepicker').nepaliDatePicker();</code></pre>
 	<script>
 		jQuery(document).ready(function () {
 			$('.date-picker').nepaliDatePicker();
-			// $('#ex1').nepaliDatePicker({
-			// 	single: true
-			// });
-
-			$('#ex2').nepaliDatePicker({
-				single: true,
-				locale: 'en'
-			});
 		})
 	</script>
 
