@@ -1,8 +1,8 @@
 (function ($) {
-	var $body = $('body');
+	const $body = $('body');
 
 	// initialize date converter
-	var converter = new DateConverter();
+	const converter = new DateConverter();
 	converter.setCurrentDate();
 
 	let today =
@@ -20,8 +20,8 @@
 	var cur_cal_id = ''; // cur selected calendar id
 
 	// set default date to this month
-	var this_year = converter.getNepaliYear();
-	var this_month = converter.getNepaliMonth();
+	const this_year = converter.getNepaliYear();
+	const this_month = converter.getNepaliMonth();
 
 	// calendar config
 	var start_year = 2000;
@@ -41,8 +41,7 @@
 	var last_captured_date = ''; // get last captured date, will be used to select days in multiple selection
 	var input_field_name = '';
 
-	// show different message according to os
-	var os = 'win';
+	var os = 'win'; // show different message according to os
 	var $selector = ''; // currently active selector
 	var $form = ''; // parent form of selected selector
 
@@ -135,7 +134,7 @@
 				locale: data_locale || defaults.locale,
 			});
 
-			if (data_single == true || data_single == 1) {
+			if (data_single === true || data_single === 1) {
 				single_datepicker = 1;
 			} else {
 				single_datepicker = 0;
@@ -150,10 +149,12 @@
 
 				let default_dates = default_value.split(',');
 				default_dates.forEach(function (item, index) {
+					cur_cal_id = cur_cal;
+
 					generate_hidden_input_fields(item.trim());
 				});
 
-				if (data_show_all_dates != true) {
+				if (data_show_all_dates !== true) {
 					if (default_dates.length > 1) {
 						output_msg = default_dates.length + ' dates selected';
 					} else {
@@ -244,6 +245,7 @@
 				var $hidden_publish_dates = $(
 					'input.andp-hidden-dates[data-cur_cal_id="' + cur_cal_id + '"]'
 				);
+
 				var total_hidden_dates = $hidden_publish_dates.length;
 
 				if (total_hidden_dates > 0) {
@@ -262,11 +264,10 @@
 						// last selected date
 						older_date = $(
 							'input.andp-hidden-dates[data-cur_cal_id="' + cur_cal_id + '"]'
-						);
+						).last();
+
 						let total_older_date = older_date.length;
-						older_date = format_date_yyyy_mm_dd(
-							older_date.eq(total_older_date - 1).val()
-						);
+						older_date = format_date_yyyy_mm_dd(older_date.val());
 
 						// switch calendar to last month and year of selected date
 						if (older_date && older_date.length > 0) {
@@ -277,7 +278,7 @@
 						}
 
 						$hidden_publish_dates.each(function () {
-							let sel_date = format_date_yyyy_mm_dd($(this).val());
+							let sel_date = $(this).val();
 
 							// mark all selected dates as selexted in calendar ui.
 							select_date(sel_date);
@@ -515,8 +516,6 @@
 			var output_msg = ''; //user_selected_dates[0];
 
 			let show_all_dates = getSettingsValue(cur_cal_id, 'show_all_dates');
-
-			// console.log('show_all_dates', show_all_dates);
 
 			if (show_all_dates == true) {
 				if ($selector.is(':input')) {
@@ -808,8 +807,6 @@
 					let proper_date = year + '-' + month + '-' + day;
 					let ar_index = user_selected_dates.indexOf(proper_date);
 
-					console.log('ar_index', ar_index, proper_date, user_selected_dates);
-
 					let compare_date_after = converter.compareDate(
 						proper_date,
 						date_after
@@ -945,6 +942,7 @@
 			if (ar_index < 0) {
 				// date does not exist in  user_selected_dates array
 				// add selected date into user_selected_dates array
+
 				user_selected_dates.push(selected_date);
 
 				// mark this day as selected
