@@ -1,7 +1,7 @@
 {
   "name": "nepali-multi-date-picker",
-  "version": "2.4.1",
-  "description": "A simple yet powerful date picker based in Nepali calendar. Supports both single date selections and multiple date selection.",
+  "version": "2.4.2",
+  "description": "A simple yet powerful jquery date picker based in Nepali calendar. Supports both single and multiple date selections in dual language.",
   "main": "nepali-date-picker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,7 +17,8 @@
     "calendar",
     "picker",
     "multi",
-    "date"
+    "date",
+    "jquery"
   ],
   "author": "Sanil Shakya",
   "license": "ISC",
