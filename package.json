@@ -1,0 +1,28 @@
+{
+  "name": "nepali-multi-date-picker",
+  "version": "2.4.0",
+  "description": "A simple yet powerful date picker based in Nepali calendar. Supports both single date selections and multiple date selection.",
+  "main": "nepali-date-picker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonill/Nepali-Multi-Date-Picker.git"
+  },
+  "keywords": [
+    "nepalidatepicker",
+    "sanil",
+    "nepali",
+    "calendar",
+    "picker",
+    "multi",
+    "date"
+  ],
+  "author": "Sanil Shakya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sonill/Nepali-Multi-Date-Picker/issues"
+  },
+  "homepage": "https://github.com/sonill/Nepali-Multi-Date-Picker#readme"
+}
