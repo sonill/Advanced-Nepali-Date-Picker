@@ -567,14 +567,16 @@
 		var template =
 			'<div class="andp-datepicker-container" data-cur_cal_id="' +
 			cur_cal_id +
-			'" >';
+			'" data-locale="' +
+			locale +
+			'">';
 		template += '<div class = "andp-header">';
 		template +=
-			'<button type = "button"  class = "andp-prev andp-change-months"> &#10094; </button>';
+			'<button type = "button"  class = "andp-prev andp-change-months"></button>';
 		template += '<select class = "andp-month-select"> </select>';
 		template += '<select class = "andp-year-select"> </select>';
 		template +=
-			'<button type = "button" class = "andp-next andp-change-months"> &#10095; </button> ';
+			'<button type = "button" class = "andp-next andp-change-months"></button> ';
 		template += '</div>';
 		template += '<div class="andp-body">';
 
@@ -970,6 +972,25 @@
 		);
 	}
 
+	$(document).keydown(function (event) {
+		const $calendar = $('.andp-datepicker-container.open');
+		const is_open = $calendar.length;
+
+		// check if datepicker is open
+		if (!is_open) {
+			return;
+		}
+
+		switch (event.which) {
+			case 37: // Left arrow key
+				$calendar.find('.andp-prev.andp-change-months').click();
+				break;
+			case 39: // Right arrow key
+				$calendar.find('.andp-next.andp-change-months').click();
+				break;
+		}
+	});
+
 	function DateConverter() {
 		this.englishMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 		this.englishLeapMonths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -1177,7 +1198,7 @@
 			} else return false;
 		};
 
-		//Nepali to English conversion
+		// Nepali to English conversion
 
 		this.setNepaliDate = function (year, month, date) {
 			if (!this.isNepaliRange(year, month, date)) {
